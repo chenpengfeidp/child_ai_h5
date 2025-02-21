@@ -14,6 +14,7 @@ import ImageRecognitionPage from '../pages/AIExperiments/pages/ImageRecognitionP
 import SpeechSynthesisPage from '../pages/AIExperiments/pages/SpeechSynthesisPage';
 import NLPPage from '../pages/AIExperiments/pages/NLPPage';
 import MachineLearningPage from '../pages/AIExperiments/pages/MachineLearningPage';
+import QRCodePage from '../pages/QRCodePage';
 
 const router = createHashRouter([
   {
@@ -76,6 +77,10 @@ const router = createHashRouter([
     path: '/ai-experiments/machine-learning',
     element: <MachineLearningPage />,
   },
+  {
+    path: '/qrcode',
+    element: <QRCodePage />
+  }
 ]);
 
 export default router;

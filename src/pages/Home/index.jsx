@@ -1,6 +1,6 @@
 import React from 'react';
 import { Layout, Typography, Card, Row, Col } from 'antd';
-import { RobotOutlined, PlayCircleOutlined, ExperimentOutlined } from '@ant-design/icons';
+import { RobotOutlined, PlayCircleOutlined, ExperimentOutlined, QrcodeOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import './index.css';
 
@@ -28,6 +28,12 @@ const Home = () => {
       icon: <ExperimentOutlined style={{ fontSize: '32px' }} />,
       description: '动手实践，亲身体验AI的神奇',
       path: '/ai-experiments'
+    },
+    {
+      title: '手机访问',
+      icon: <QrcodeOutlined style={{ fontSize: '32px' }} />,
+      description: '扫描二维码在手机上访问',
+      path: '/qrcode'
     }
   ];
 
