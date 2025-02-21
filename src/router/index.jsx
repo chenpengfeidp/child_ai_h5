@@ -1,4 +1,4 @@
-import { createBrowserRouter } from 'react-router-dom';
+import { createHashRouter } from 'react-router-dom';
 import Home from '../pages/Home';
 import AIBasics from '../pages/AIBasics';
 import AIGames from '../pages/AIGames';
@@ -14,7 +14,7 @@ import SpeechSynthesisPage from '../pages/AIExperiments/pages/SpeechSynthesisPag
 import NLPPage from '../pages/AIExperiments/pages/NLPPage';
 import MachineLearningPage from '../pages/AIExperiments/pages/MachineLearningPage';
 
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     path: '/',
     element: <Home />,

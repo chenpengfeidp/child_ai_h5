@@ -39,7 +39,7 @@ const Home = () => {
           <div className="cards-container">
             <Row gutter={[24, 24]} justify="center">
               {cards.map((card, index) => (
-                <Col xs={24} sm={12} md={8} key={index}>
+                <Col xs={24} sm={24} md={24} key={index}>
                   <Card
                     hoverable
                     className="feature-card"

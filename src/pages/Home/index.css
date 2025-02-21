@@ -46,6 +46,8 @@
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
   border: 2px solid rgba(255, 255, 255, 0.1);
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 .feature-card:hover {
@@ -91,6 +93,6 @@
 
 .cards-container {
   width: 100%;
-  max-width: 1200px;
+  max-width: 800px;
   margin: 0 auto;
 }
