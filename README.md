@@ -6,17 +6,17 @@
 
 本项目提供多种免费的部署方式，你可以选择以下任意一种方式来部署你的项目：
 
-### 方式一：使用 GitHub Pages（推荐）
+### 方式一：使用 Gitee Pages（推荐）
 
-1. 在 GitHub 上创建一个新的仓库
+1. 在 Gitee 上创建一个新的仓库
 2. 在本地初始化 Git 并添加远程仓库：
    ```bash
    git init
    git add .
    git commit -m "初始化项目"
-   git branch -M main
-   git remote add origin 你的仓库地址
-   git push -u origin main
+   git branch -M master
+   git remote add origin 你的Gitee仓库地址
+   git push -u origin master
    ```
 3. 安装 gh-pages 包：
    ```bash
@@ -42,7 +42,8 @@
    ```bash
    npm run deploy
    ```
-7. 在仓库设置中启用 GitHub Pages，选择 gh-pages 分支
+7. 在 Gitee 仓库设置中启用 Gitee Pages，选择 gh-pages 分支
+8. 点击「更新」按钮部署网站
 
 ### 方式二：使用 Netlify（零配置）
 
