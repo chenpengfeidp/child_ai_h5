@@ -1,0 +1,47 @@
+.word-guess {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.game-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.game-header h3 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.game-area {
+  margin-bottom: 20px;
+}
+
+.hint-section {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.hint-section h4 {
+  margin-bottom: 10px;
+}
+
+.input-section {
+  text-align: center;
+}
+
+.game-rules {
+  background-color: #f5f5f5;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.game-rules h4 {
+  margin-bottom: 10px;
+}
+
+.game-rules p {
+  margin-bottom: 8px;
+  line-height: 1.5;
+}

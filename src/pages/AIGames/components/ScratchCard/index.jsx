@@ -10,16 +10,17 @@ const ScratchCard = () => {
   const [currentImage, setCurrentImage] = useState('');
 
   const images = [
-    'https://picsum.photos/400/300?random=1',
-    'https://picsum.photos/400/300?random=2',
-    'https://picsum.photos/400/300?random=3',
-    'https://picsum.photos/400/300?random=4',
+    'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=300&h=225&fit=crop', // AI助手/机器人
+    'https://images.unsplash.com/photo-1555255707-c07966088b7b?w=300&h=225&fit=crop', // 神经网络可视化
+    'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=300&h=225&fit=crop', // AI艺术
+    'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=300&h=225&fit=crop', // 智能机器
   ];
 
   const initCanvas = () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
+    ctx.globalCompositeOperation = 'source-over';
     ctx.fillStyle = '#CCCCCC';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.lineJoin = 'round';
@@ -40,6 +41,7 @@ const ScratchCard = () => {
 
   const handleEnd = () => {
     setIsDrawing(false);
+    setLastPoint(null);
     checkProgress();
   };
 
@@ -57,11 +59,13 @@ const ScratchCard = () => {
     }
 
     const percentScratched = (transparentPixels / (canvas.width * canvas.height)) * 100;
-    if (percentScratched > 50 && score === 0) {
+    if (percentScratched > 30 && score === 0) {
       setScore(score + 10);
       message.success('恭喜你发现了AI生成的图片！');
     }
   };
+
+  const [lastPoint, setLastPoint] = useState(null);
 
   const draw = (e) => {
     if (!isDrawing) return;
@@ -69,14 +73,32 @@ const ScratchCard = () => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
     const rect = canvas.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
+    
+    let x, y;
+    if (e.type.includes('touch')) {
+      const touch = e.touches[0];
+      x = touch.clientX - rect.left;
+      y = touch.clientY - rect.top;
+      e.preventDefault(); // 防止触摸时页面滚动
+    } else {
+      x = e.clientX - rect.left;
+      y = e.clientY - rect.top;
+    }
 
     ctx.globalCompositeOperation = 'destination-out';
-    ctx.beginPath();
-    ctx.moveTo(x, y);
-    ctx.lineTo(x, y);
+    
+    if (!lastPoint) {
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      ctx.lineTo(x, y);
+    } else {
+      ctx.beginPath();
+      ctx.moveTo(lastPoint.x, lastPoint.y);
+      ctx.lineTo(x, y);
+    }
+    
     ctx.stroke();
+    setLastPoint({ x, y });
   };
 
   const resetGame = () => {
@@ -119,12 +141,15 @@ const ScratchCard = () => {
           )}
           <canvas
             ref={canvasRef}
-            width={400}
-            height={300}
+            width={300}
+            height={225}
             onMouseDown={handleStart}
             onMouseMove={draw}
             onMouseUp={handleEnd}
             onMouseLeave={handleEnd}
+            onTouchStart={handleStart}
+            onTouchMove={draw}
+            onTouchEnd={handleEnd}
           />
         </div>
       </div>

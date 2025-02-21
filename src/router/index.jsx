@@ -5,6 +5,7 @@ import AIGames from '../pages/AIGames';
 import AIExperiments from '../pages/AIExperiments';
 import MemoryGamePage from '../pages/AIGames/pages/MemoryGamePage';
 import ScratchCardPage from '../pages/AIGames/pages/ScratchCardPage';
+import WordGuessPage from '../pages/AIGames/pages/WordGuessPage';
 import IntroductionPage from '../pages/AIBasics/pages/IntroductionPage';
 import ApplicationsPage from '../pages/AIBasics/pages/ApplicationsPage';
 import LearningPage from '../pages/AIBasics/pages/LearningPage';
@@ -38,6 +39,10 @@ const router = createHashRouter([
   {
     path: '/ai-games/scratch',
     element: <ScratchCardPage />,
+  },
+  {
+    path: '/ai-games/word-guess',
+    element: <WordGuessPage />,
   },
   {
     path: '/ai-basics/introduction',

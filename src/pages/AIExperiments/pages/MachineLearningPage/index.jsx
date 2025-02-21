@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Layout, Typography, Button, Row, Col, Card, Space, message } from 'antd';
 import { HomeOutlined, ArrowLeftOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
@@ -7,238 +7,202 @@ import '../../index.css';
 const { Content } = Layout;
 const { Title, Text } = Typography;
 
+const COLORS = [
+  { name: '红色', value: '#ff4d4f', label: 'red' },
+  { name: '蓝色', value: '#1890ff', label: 'blue' },
+  { name: '绿色', value: '#52c41a', label: 'green' },
+  { name: '黄色', value: '#faad14', label: 'yellow' },
+];
+
 const MachineLearningPage = () => {
   const navigate = useNavigate();
-  const canvasRef = useRef(null);
+  const [selectedColor, setSelectedColor] = useState(null);
   const [trainingData, setTrainingData] = useState([]);
   const [isTraining, setIsTraining] = useState(false);
   const [model, setModel] = useState(null);
 
-  const [isDrawing, setIsDrawing] = useState(false);
-  const [currentShape, setCurrentShape] = useState('circle');
-  const [currentPoint, setCurrentPoint] = useState(null);
-  const [drawingHistory, setDrawingHistory] = useState([]);
-
   // 添加训练数据
-  const addTrainingData = (shape, label) => {
-    const newData = { shape, label, timestamp: Date.now() };
+  const addTrainingData = (color) => {
+    const newData = { color, timestamp: Date.now() };
     setTrainingData(prev => [...prev, newData]);
-    message.success('成功添加训练数据');
+    message.success('成功添加训练数据', 0.3);
+  };
+
+  // 计算时间权重
+  const calculateTimeWeight = (timestamp) => {
+    const now = Date.now();
+    const hoursDiff = (now - timestamp) / (1000 * 60 * 60);
+    return Math.exp(-hoursDiff / 24); // 使用指数衰减，24小时后权重减半
   };
 
   // 测试模型
-  const testModel = (shape) => {
+  const testColor = (color) => {
     if (!model || !model.trained) {
       message.warning('请先训练模型');
       return;
     }
-    // 根据训练数据进行简单的分类
-    const circleCount = trainingData.filter(data => data.shape === 'circle').length;
-    const squareCount = trainingData.filter(data => data.shape === 'square').length;
-    
-    // 基于训练数据的分布进行预测
-    const result = shape === 'circle' ? '圆形' : '方形';
-    message.success(`预测结果：${result}`);
-    return result;
+
+    // 计算每种颜色的加权得分
+    const colorScores = {};
+    COLORS.forEach(c => {
+      const colorData = trainingData.filter(data => data.color === c.label);
+      const weightedScore = colorData.reduce((score, data) => {
+        return score + calculateTimeWeight(data.timestamp);
+      }, 0);
+      colorScores[c.label] = weightedScore;
+    });
+
+    // 找出得分最高的颜色
+    const predictedColor = Object.entries(colorScores).reduce(
+      (max, [color, score]) => (score > max.score ? { color, score } : max),
+      { color: null, score: -1 }
+    ).color;
+
+    const colorName = COLORS.find(c => c.label === color)?.name;
+    const prediction = COLORS.find(c => c.label === predictedColor)?.name;
+
+    // 计算预测的置信度
+    const totalScore = Object.values(colorScores).reduce((sum, score) => sum + score, 0);
+    const confidence = totalScore > 0 ? colorScores[predictedColor] / totalScore : 0;
+
+    // 显示当前选择的颜色的预测结果
+    message.success(`预测结果：${colorName}可能是${prediction}（置信度：${(confidence * 100).toFixed(1)}%）`, 1.3);
+    return prediction;
   };
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
-    ctx.fillStyle = '#ffffff';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    const handleMouseDown = (e) => {
-      setIsDrawing(true);
-      const rect = canvas.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      setCurrentPoint({ x, y });
-    };
-
-    const handleMouseMove = (e) => {
-      if (!isDrawing) return;
-      const rect = canvas.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = '#ffffff';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      
-      ctx.beginPath();
-      ctx.strokeStyle = '#1890ff';
-      ctx.lineWidth = 2;
-      
-      if (currentShape === 'circle') {
-        const radius = Math.sqrt(
-          Math.pow(x - currentPoint.x, 2) + Math.pow(y - currentPoint.y, 2)
-        );
-        ctx.arc(currentPoint.x, currentPoint.y, radius, 0, 2 * Math.PI);
-      } else {
-        const width = x - currentPoint.x;
-        const height = y - currentPoint.y;
-        ctx.rect(currentPoint.x, currentPoint.y, width, height);
-      }
-      
-      ctx.stroke();
-    };
-
-    const handleMouseUp = () => {
-      if (!isDrawing) return;
-      setIsDrawing(false);
-      addTrainingData(currentShape);
-      testModel(currentShape);
-      setDrawingHistory(prev => [...prev, { shape: currentShape, timestamp: Date.now() }]);
-    };
-
-    canvas.addEventListener('mousedown', handleMouseDown);
-    canvas.addEventListener('mousemove', handleMouseMove);
-    canvas.addEventListener('mouseup', handleMouseUp);
-    canvas.addEventListener('mouseleave', () => setIsDrawing(false));
-
-    return () => {
-      canvas.removeEventListener('mousedown', handleMouseDown);
-      canvas.removeEventListener('mousemove', handleMouseMove);
-      canvas.removeEventListener('mouseup', handleMouseUp);
-      canvas.removeEventListener('mouseleave', () => setIsDrawing(false));
-    };
-  }, [isDrawing, currentPoint, currentShape, model, trainingData]);
-
-
 
   // 开始训练模型
   const startTraining = () => {
-    if (trainingData.length < 2) {
-      message.warning('请至少添加2个训练样本');
+    if (trainingData.length < 4) {
+      message.warning('请至少添加4个训练样本');
       return;
     }
     setIsTraining(true);
     // 模拟训练过程
     setTimeout(() => {
-      const accuracy = 0.85 + Math.random() * 0.1; // 模拟85%-95%的准确率
-      setModel({ 
-        trained: true, 
-        accuracy,
+      // 计算模型的准确率
+      const totalWeightedSamples = trainingData.reduce((sum, data) => {
+        return sum + calculateTimeWeight(data.timestamp);
+      }, 0);
+
+      const accuracy = 0.7 + (totalWeightedSamples / 20); // 样本越多，准确率越高，最高95%
+      setModel({
+        trained: true,
+        accuracy: Math.min(accuracy, 0.95),
         trainedAt: Date.now(),
         samplesCount: trainingData.length
       });
       setIsTraining(false);
-      message.success(`模型训练完成！准确率：${(accuracy * 100).toFixed(1)}%`);
+      message.success(`模型训练完成！准确率：${(Math.min(accuracy, 0.95) * 100).toFixed(1)}%`);
     }, 2000);
   };
-
-
 
   return (
     <Layout className="ai-experiments-container">
       <Content className="ai-experiments-content">
         <div className="nav-buttons" style={{ marginBottom: '20px' }}>
-          <Button 
-            type="primary" 
-            icon={<ArrowLeftOutlined />} 
+          <Button
+            type="primary"
+            icon={<ArrowLeftOutlined />}
             onClick={() => navigate(-1)}
             style={{ marginRight: '10px' }}
           >
             返回上一页
           </Button>
-          <Button 
-            type="primary" 
-            icon={<HomeOutlined />} 
+          <Button
+            type="primary"
+            icon={<HomeOutlined />}
             onClick={() => navigate('/')}
           >
             返回首页
           </Button>
         </div>
-        <Title level={1} className="page-title">机器学习实验</Title>
-        
+        <Title level={1} className="page-title">AI颜色识别实验</Title>
+
         <div className="content-section">
           <Title level={2}>实验介绍</Title>
-          <p>在这个实验中，你将通过互动体验来了解机器学习的基本原理。通过简单的训练示例，观察AI系统如何学习和优化，直观理解机器学习的工作过程。</p>
+          <p>在这个实验中，你将通过互动体验来了解AI是如何学习识别颜色的。通过选择不同的颜色进行训练，观察AI系统如何学习和预测颜色类别。系统会根据你最近的选择和训练数据的时间分布来做出更准确的预测。</p>
         </div>
 
         <div className="content-section">
-          <Title level={2}>形状分类实验</Title>
+          <Title level={2}>颜色识别实验</Title>
           <Row gutter={[24, 24]}>
-            <Col span={12}>
+            <Col span={24}>
               <Card title="训练区域">
-                <canvas
-                  ref={canvasRef}
-                  width={300}
-                  height={225}
-                  style={{
-                    border: '2px solid #1890ff',
-                    borderRadius: '8px',
-                    marginBottom: '16px',
-                    cursor: 'crosshair',
-                    background: '#fff',
-                    display: 'block',
-                    margin: '0 auto'
-                  }}
-                />
-                <Space direction="vertical" style={{ width: '100%' }}>
-                  <Space>
-                    <Button 
-                      type={currentShape === 'circle' ? 'primary' : 'default'}
-                      onClick={() => setCurrentShape('circle')}
-                    >
-                      绘制圆形
-                    </Button>
-                    <Button 
-                      type={currentShape === 'square' ? 'primary' : 'default'}
-                      onClick={() => setCurrentShape('square')}
-                    >
-                      绘制方形
-                    </Button>
-                  </Space>
-                  <Button 
-                    type="primary" 
-                    onClick={startTraining} 
+                <Space direction="vertical" style={{ width: '100%' }} size="large">
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px' }}>
+                    {COLORS.map((color) => (
+                      <div
+                        key={color.label}
+                        onClick={() => {
+                          setSelectedColor(color.label);
+                          addTrainingData(color.label);
+                          if (model?.trained) {
+                            testColor(color.label);
+                          }
+                        }}
+                        style={{
+                          backgroundColor: color.value,
+                          height: '80px',
+                          borderRadius: '8px',
+                          cursor: 'pointer',
+                          border: selectedColor === color.label ? '4px solid #000' : 'none',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}
+                      >
+                        <Text strong style={{ color: '#fff', textShadow: '1px 1px 2px rgba(0,0,0,0.5)' }}>
+                          {color.name}
+                        </Text>
+                      </div>
+                    ))}
+                  </div>
+                  <Button
+                    type="primary"
+                    onClick={startTraining}
                     loading={isTraining}
                     disabled={trainingData.length === 0}
                   >
                     开始训练 ({trainingData.length} 个样本)
                   </Button>
-                  <Button 
-                    type="primary" 
+                  <Button
+                    type="primary"
+                    danger
                     onClick={() => {
-                      const canvas = canvasRef.current;
-                      const ctx = canvas.getContext('2d');
-                      ctx.fillStyle = '#ffffff';
-                      ctx.fillRect(0, 0, canvas.width, canvas.height);
-                      setDrawingHistory([]);
+                      setTrainingData([]);
+                      setModel(null);
+                      setSelectedColor(null);
+                      message.success('已清除所有训练数据');
                     }}
-                    style={{ marginRight: '8px' }}
                   >
-                    清除画布
+                    清除训练数据
                   </Button>
                 </Space>
               </Card>
             </Col>
-            <Col span={12}>
+            <Col span={24}>
               <Card title="测试区域">
                 <div style={{ minHeight: '300px', padding: '20px', textAlign: 'center' }}>
                   {model ? (
                     <div>
                       <Title level={4} style={{ marginBottom: '20px' }}>模型已训练完成！</Title>
-                      <p style={{ fontSize: '16px', marginBottom: '20px' }}>请在左侧画布绘制形状，系统会自动进行分类。</p>
-                      {drawingHistory.length > 0 && (
-                        <div style={{ marginTop: '20px', padding: '15px', background: '#f0f2f5', borderRadius: '8px' }}>
-                          <Text strong>当前绘制：</Text>
-                          <Text>{currentShape === 'circle' ? '圆形' : '方形'}</Text>
-                          <div style={{ marginTop: '10px' }}>
-                            <Text type="success">已添加到训练数据集</Text>
-                          </div>
-                        </div>
-                      )}
+                      <p style={{ fontSize: '16px', marginBottom: '20px' }}>请在左侧选择颜色块，系统会根据你的训练数据和最近的选择进行智能识别。</p>
                       <div style={{ marginTop: '20px' }}>
                         <Text strong>当前训练数据：{trainingData.length} 个样本</Text>
                         <div style={{ marginTop: '10px', maxHeight: '150px', overflowY: 'auto' }}>
-                          {trainingData.map((data, index) => (
-                            <div key={index} style={{ padding: '5px', background: index % 2 ? '#fafafa' : '#fff' }}>
-                              <Text>样本 {index + 1}: {data.shape === 'circle' ? '圆形' : '方形'}</Text>
-                            </div>
-                          ))}
+                          {trainingData.map((data, index) => {
+                            const timeWeight = calculateTimeWeight(data.timestamp);
+                            return (
+                              <div key={index} style={{ padding: '5px', background: index % 2 ? '#fafafa' : '#fff' }}>
+                                <Text>
+                                  样本 {index + 1}: {COLORS.find(c => c.label === data.color)?.name}
+                                  <span style={{ marginLeft: '10px', fontSize: '12px', color: '#888' }}>
+                                    权重: {(timeWeight * 100).toFixed(1)}%
+                                  </span>
+                                </Text>
+                              </div>
+                            );
+                          })}
                         </div>
                       </div>
                     </div>

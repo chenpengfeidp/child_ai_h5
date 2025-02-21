@@ -49,10 +49,20 @@ const AIGames = () => {
               <Card
                 hoverable
                 className="game-card"
-                onClick={() => navigate('/ai-games/scratch')}
+                onClick={() => navigate('/ai-games/word-guess')}
+              >
+                <Title level={3}>AI词语猜谜</Title>
+                <p>根据提示猜出AI相关的词语，考验你的AI知识</p>
+              </Card>
+            </Col>
+            <Col xs={24} sm={12}>
+              <Card
+                hoverable
+                className="game-card"
+                onClick={() => navigate('/ai-games/scratch-card')}
               >
                 <Title level={3}>AI图片刮刮乐</Title>
-                <p>刮开神秘的涂层，发现AI创造的精彩图片</p>
+                <p>通过刮开图片，探索AI生成的神奇画作</p>
               </Card>
             </Col>
           </Row>
