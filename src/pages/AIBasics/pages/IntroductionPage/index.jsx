@@ -37,8 +37,13 @@ const IntroductionPage = () => {
   };
 
   const handlePlay = () => {
+    // 检查浏览器是否支持语音合成
+    if (!('speechSynthesis' in window)) {
+      console.log('当前浏览器不支持语音合成');
+      return;
+    }
+
     if (!isPlaying) {
-      // 开始播放
       const utterance = new SpeechSynthesisUtterance(getAllText());
 
       // 获取可用的语音列表
@@ -74,11 +79,14 @@ const IntroductionPage = () => {
 
   // 确保在组件加载时获取语音列表
   useEffect(() => {
-    const synth = window.speechSynthesis;
-    if (synth.onvoiceschanged !== undefined) {
-      synth.onvoiceschanged = () => {
-        window.speechSynthesis.getVoices();
-      };
+    // 首先检查浏览器是否支持语音合成
+    if ('speechSynthesis' in window) {
+      const synth = window.speechSynthesis;
+      if (synth && synth.onvoiceschanged !== undefined) {
+        synth.onvoiceschanged = () => {
+          window.speechSynthesis.getVoices();
+        };
+      }
     }
   }, []);
 
@@ -174,7 +182,6 @@ const IntroductionPage = () => {
               }}
               controls
               controlsList="nodownload"
-              poster="/path/to/poster.jpg"  // 可选：设置视频封面
             >
               <source src={aiVideo} type="video/mp4" />
               你的浏览器不支持 video 标签

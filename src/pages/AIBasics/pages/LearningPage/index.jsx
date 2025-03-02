@@ -41,6 +41,12 @@ const LearningPage = () => {
   };
 
   const handlePlay = () => {
+    // 检查浏览器是否支持语音合成
+    if (!('speechSynthesis' in window)) {
+      console.log('当前浏览器不支持语音合成');
+      return;
+    }
+
     if (!isPlaying) {
       const utterance = new SpeechSynthesisUtterance(getAllText());
 
@@ -77,18 +83,21 @@ const LearningPage = () => {
 
   // 确保在组件加载时获取语音列表
   useEffect(() => {
-    const synth = window.speechSynthesis;
-    if (synth.onvoiceschanged !== undefined) {
-      synth.onvoiceschanged = () => {
-        window.speechSynthesis.getVoices();
-      };
+    // 首先检查浏览器是否支持语音合成
+    if ('speechSynthesis' in window) {
+      const synth = window.speechSynthesis;
+      if (synth && synth.onvoiceschanged !== undefined) {
+        synth.onvoiceschanged = () => {
+          window.speechSynthesis.getVoices();
+        };
+      }
     }
   }, []);
 
   // 组件卸载时停止语音播放
   useEffect(() => {
     return () => {
-      if (isPlaying) {
+      if (isPlaying && 'speechSynthesis' in window) {
         window.speechSynthesis.cancel();
       }
     };
@@ -154,7 +163,7 @@ const LearningPage = () => {
           </ul>
         </div>
 
-        
+
         <div className="content-section" style={{ marginBottom: '48px' }}>
           <Title level={2}>神经网络</Title>
           <p>神经网络是模仿人类大脑结构设计的计算模型：</p>

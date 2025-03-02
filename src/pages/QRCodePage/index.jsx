@@ -2,6 +2,7 @@ import React from 'react';
 import { Layout, Typography, Button, QRCode } from 'antd';
 import { HomeOutlined, ArrowLeftOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
+import qrCodeImage from './child_h5.jpg';
 
 const { Content } = Layout;
 const { Title } = Typography;
@@ -11,8 +12,8 @@ const QRCodePage = () => {
   const websiteUrl = 'https://chenpengfeidp.github.io/child_ai_h5/';
 
   return (
-    <Layout className="qrcode-container" style={{ 
-      minHeight: '100vh', 
+    <Layout className="qrcode-container" style={{
+      minHeight: '100vh',
       background: 'linear-gradient(120deg, #e0c3fc 0%, #8ec5fc 100%)',
       position: 'relative',
       overflow: 'hidden'
@@ -24,9 +25,9 @@ const QRCodePage = () => {
         background: 'radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%)',
         animation: 'pulse 4s infinite'
       }} />
-      <Content style={{ 
-        padding: '24px', 
-        maxWidth: '800px', 
+      <Content style={{
+        padding: '24px',
+        maxWidth: '800px',
         margin: '0 auto',
         position: 'relative',
         zIndex: 1
@@ -49,8 +50,8 @@ const QRCodePage = () => {
           </Button>
         </div>
 
-        <div style={{ 
-          textAlign: 'center', 
+        <div style={{
+          textAlign: 'center',
           marginTop: '40px',
           padding: '40px',
           background: 'rgba(255, 255, 255, 0.25)',
@@ -60,8 +61,8 @@ const QRCodePage = () => {
         }}>
           <Title level={1} style={{ color: '#1a237e' }}>扫码访问</Title>
           <Title level={1} style={{ color: '#1a237e' }}>少儿AI启蒙</Title>
-          <div style={{ 
-            marginTop: '30px', 
+          <div style={{
+            marginTop: '30px',
             marginBottom: '30px',
             display: 'inline-block',
             padding: '20px',
@@ -69,20 +70,17 @@ const QRCodePage = () => {
             borderRadius: '15px',
             boxShadow: '0 4px 15px rgba(0,0,0,0.1)'
           }}>
-            <a href='https://postimg.cc/Hc59TsWR' target='_blank'>
-              <img 
-                src='https://i.postimg.cc/Hc59TsWR/child-h5.jpg' 
-                border='0' 
-                alt='child-h5'
-                style={{
-                  maxWidth: '200px',
-                  height: 'auto',
-                  display: 'block'
-                }}
-              />
-            </a>
+            <img
+              src={qrCodeImage}
+              alt='扫码访问少儿AI启蒙'
+              style={{
+                maxWidth: '200px',
+                height: 'auto',
+                display: 'block'
+              }}
+            />
           </div>
-          <Title level={3} style={{ 
+          <Title level={3} style={{
             marginTop: '20px',
             color: '#1a237e',
             fontWeight: 'normal'
