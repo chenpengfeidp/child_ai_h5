@@ -1,7 +1,7 @@
 import React from 'react';
-import { Layout, Typography, Button } from 'antd';
-import { HomeOutlined, ArrowLeftOutlined } from '@ant-design/icons';
+import { Layout, Typography } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import NavButtons from '../../../../components/NavButtons';
 import '../../index.css';
 
 const { Content } = Layout;
@@ -13,23 +13,7 @@ const FuturePage = () => {
   return (
     <Layout className="ai-basics-container">
       <Content className="ai-basics-content">
-        <div className="nav-buttons" style={{ marginBottom: '20px' }}>
-          <Button 
-            type="primary" 
-            icon={<ArrowLeftOutlined />} 
-            onClick={() => navigate(-1)}
-            style={{ marginRight: '10px' }}
-          >
-            返回上一页
-          </Button>
-          <Button 
-            type="primary" 
-            icon={<HomeOutlined />} 
-            onClick={() => navigate('/')}
-          >
-            返回首页
-          </Button>
-        </div>
+        <NavButtons />
         <Title level={1} className="page-title">AI的未来</Title>
         <div className="content-section">
           <Title level={2}>技术发展趋势</Title>

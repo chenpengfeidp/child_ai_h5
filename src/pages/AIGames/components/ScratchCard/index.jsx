@@ -73,7 +73,7 @@ const ScratchCard = () => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
     const rect = canvas.getBoundingClientRect();
-    
+
     let x, y;
     if (e.type.includes('touch')) {
       const touch = e.touches[0];
@@ -86,7 +86,7 @@ const ScratchCard = () => {
     }
 
     ctx.globalCompositeOperation = 'destination-out';
-    
+
     if (!lastPoint) {
       ctx.beginPath();
       ctx.moveTo(x, y);
@@ -96,7 +96,7 @@ const ScratchCard = () => {
       ctx.moveTo(lastPoint.x, lastPoint.y);
       ctx.lineTo(x, y);
     }
-    
+
     ctx.stroke();
     setLastPoint({ x, y });
   };
@@ -113,6 +113,17 @@ const ScratchCard = () => {
   };
 
   useEffect(() => {
+    if (currentImage) {
+      const img = new Image();
+      img.src = currentImage;
+      img.onload = () => {
+        setImageLoaded(true);
+        initCanvas();
+      };
+    }
+  }, [currentImage]);
+
+  useEffect(() => {
     loadNewImage();
   }, []);
 
@@ -126,8 +137,8 @@ const ScratchCard = () => {
     <div className="scratch-card">
       <div className="game-header">
         <h3>AI图片刮刮乐</h3>
-        <p>得分: {score}</p>
-        <Button type="primary" onClick={resetGame}>重新开始</Button>
+        {/* <p>得分: {score}</p> */}
+        <Button type="primary" onClick={resetGame}>切换图片</Button>
       </div>
       <div className="game-area">
         <div className="canvas-container">

@@ -1,0 +1,206 @@
+.cloud-container {
+  position: relative;
+  max-width: 1000px;
+  margin: 50px auto;
+  min-height: 600px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 20px;
+}
+
+.cloud-card {
+  position: relative;
+  width: 300px;
+  padding: 30px;
+  background: linear-gradient(135deg, #adc1e7 0%, #d6f3cf 100%);
+  border-radius: 50px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  margin: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  animation: float 6s ease-in-out infinite;
+}
+
+.cloud-card::before,
+.cloud-card::after {
+  content: '';
+  position: absolute;
+  background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+  border-radius: 50%;
+}
+
+.cloud-card::before {
+  width: 100px;
+  height: 100px;
+  top: -40px;
+  left: 50px;
+}
+
+.cloud-card::after {
+  width: 80px;
+  height: 80px;
+  top: -30px;
+  right: 50px;
+}
+
+.cloud-content {
+  position: relative;
+  z-index: 1;
+}
+
+.cloud-content h3 {
+  color: #2c3e50;
+  font-size: 24px;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+.cloud-content p {
+  color: #34495e;
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: 10px;
+}
+
+.cloud-content .surprise-text {
+  color: #3498db;
+  font-size: 14px;
+  font-weight: 500;
+  margin-top: 10px;
+  display: block;
+}
+
+.cloud-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+}
+
+.cloud-1 {
+  animation-delay: 0s;
+}
+
+.cloud-2 {
+  animation-delay: 2s;
+}
+
+.cloud-3 {
+  animation-delay: 4s;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+.cloud-connections {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  background: linear-gradient(45deg, rgba(66, 133, 244, 0.1) 0%, rgba(219, 68, 55, 0.1) 100%);
+  z-index: -1;
+  border-radius: 20px;
+}
+
+.field-modal .ant-modal-content {
+  background: linear-gradient(135deg, #e19fe1 0%, #87b1f4 100%);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(19, 17, 17, 0.1);
+}
+
+.field-modal .ant-modal-header {
+  background: transparent;
+  border-bottom: none;
+  padding: 24px 24px 0;
+}
+
+.field-modal .ant-modal-title {
+  font-size: 24px;
+  color: #0c2a49;
+  margin-right: 24px;
+}
+
+.field-modal .ant-modal-close {
+  top: 16px;
+  right: 16px;
+}
+
+.field-modal .ant-modal-body {
+  padding: 24px;
+}
+
+.modal-description {
+  font-size: 16px;
+  color: #213549;
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+.feature-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.feature-list li {
+  font-size: 15px;
+  color: #365371;
+  margin-bottom: 12px;
+  padding-left: 24px;
+  position: relative;
+}
+
+.feature-list li:before {
+  content: "•";
+  color: #3498db;
+  font-size: 18px;
+  position: absolute;
+  left: 0;
+  top: -2px;
+}
+
+.field-modal .ant-modal-body {
+  padding: 30px;
+}
+
+.modal-description {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.feature-list li {
+  margin-bottom: 15px;
+  padding-left: 25px;
+  position: relative;
+  font-size: 15px;
+  color: #a84717;
+}
+
+.feature-list li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: #667eea;
+  font-size: 20px;
+  line-height: 1;
+}
+
+@media (max-width: 768px) {
+  .cloud-card {
+    width: 100%;
+    margin: 15px 0;
+  }
+
+  .cloud-container {
+    padding: 10px;
+  }
+}

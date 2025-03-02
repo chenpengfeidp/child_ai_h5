@@ -3,6 +3,7 @@ import { Layout, Typography, Button, Input, Slider, Space, Card } from 'antd';
 import { HomeOutlined, ArrowLeftOutlined, PlayCircleOutlined, PauseCircleOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import '../../index.css';
+import NavButtons from '../../../../components/NavButtons';
 
 const { Content } = Layout;
 const { Title, Text } = Typography;
@@ -41,28 +42,12 @@ const SpeechSynthesisPage = () => {
   return (
     <Layout className="ai-experiments-container">
       <Content className="ai-experiments-content">
-        <div className="nav-buttons" style={{ marginBottom: '20px' }}>
-          <Button 
-            type="primary" 
-            icon={<ArrowLeftOutlined />} 
-            onClick={() => navigate(-1)}
-            style={{ marginRight: '10px' }}
-          >
-            返回上一页
-          </Button>
-          <Button 
-            type="primary" 
-            icon={<HomeOutlined />} 
-            onClick={() => navigate('/')}
-          >
-            返回首页
-          </Button>
-        </div>
-        <Title level={1} className="page-title">语音合成实验</Title>
+        <NavButtons />
+        <Title level={1} className="page-title">语音合成</Title>
         <div className="content-section">
           <Title level={2}>实验介绍</Title>
           <p>在这个实验中，你将体验AI如何将文字转换为自然流畅的语音。通过输入文本，AI系统将生成对应的语音输出，让你直观感受语音合成技术的魅力。</p>
-          
+
           <Card title="语音合成控制面板" style={{ marginTop: 24 }}>
             <Space direction="vertical" style={{ width: '100%' }} size="large">
               <div>

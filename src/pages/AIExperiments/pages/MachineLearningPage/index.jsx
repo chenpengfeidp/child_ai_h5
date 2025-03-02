@@ -3,6 +3,7 @@ import { Layout, Typography, Button, Row, Col, Card, Space, message } from 'antd
 import { HomeOutlined, ArrowLeftOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import '../../index.css';
+import NavButtons from '../../../../components/NavButtons';
 
 const { Content } = Layout;
 const { Title, Text } = Typography;
@@ -66,7 +67,7 @@ const MachineLearningPage = () => {
     const confidence = totalScore > 0 ? colorScores[predictedColor] / totalScore : 0;
 
     // 显示当前选择的颜色的预测结果
-    message.success(`预测结果：${colorName}可能是${prediction}（置信度：${(confidence * 100).toFixed(1)}%）`, 1.3);
+    message.success(`预测结果：可能是${colorName}（置信度：${(confidence * 100).toFixed(1)}%）`, 1.3);
     return prediction;
   };
 
@@ -99,24 +100,8 @@ const MachineLearningPage = () => {
   return (
     <Layout className="ai-experiments-container">
       <Content className="ai-experiments-content">
-        <div className="nav-buttons" style={{ marginBottom: '20px' }}>
-          <Button
-            type="primary"
-            icon={<ArrowLeftOutlined />}
-            onClick={() => navigate(-1)}
-            style={{ marginRight: '10px' }}
-          >
-            返回上一页
-          </Button>
-          <Button
-            type="primary"
-            icon={<HomeOutlined />}
-            onClick={() => navigate('/')}
-          >
-            返回首页
-          </Button>
-        </div>
-        <Title level={1} className="page-title">AI颜色识别实验</Title>
+        <NavButtons />
+        <Title level={1} className="page-title">机器学习</Title>
 
         <div className="content-section">
           <Title level={2}>实验介绍</Title>
@@ -186,7 +171,7 @@ const MachineLearningPage = () => {
                   {model ? (
                     <div>
                       <Title level={4} style={{ marginBottom: '20px' }}>模型已训练完成！</Title>
-                      <p style={{ fontSize: '16px', marginBottom: '20px' }}>请在左侧选择颜色块，系统会根据你的训练数据和最近的选择进行智能识别。</p>
+                      <p style={{ fontSize: '16px', marginBottom: '20px' }}>请在上方选择颜色块，系统会根据你的训练数据和最近的选择进行智能识别。</p>
                       <div style={{ marginTop: '20px' }}>
                         <Text strong>当前训练数据：{trainingData.length} 个样本</Text>
                         <div style={{ marginTop: '10px', maxHeight: '150px', overflowY: 'auto' }}>

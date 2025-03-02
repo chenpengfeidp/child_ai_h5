@@ -1,6 +1,6 @@
 .ai-basics-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #E3F2FD 0%, #90CAF9 100%);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   position: relative;
   overflow: hidden;
 }
@@ -48,8 +48,113 @@
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
   backdrop-filter: blur(10px);
   border: 2px solid rgba(255, 255, 255, 0.2);
-  transform: translateY(0);
+}
+
+.topic-card {
+  background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%);
+  border: none !important;
+  transition: all 0.3s ease !important;
+}
+
+.topic-card:nth-child(1) {
+  background: linear-gradient(135deg, #ee99ef 0%, #4e9de2 100%);
+}
+
+.topic-card:nth-child(2) {
+  background: linear-gradient(135deg, #FFF3E0 0%, #FFE0B2 100%);
+}
+
+.topic-card:nth-child(3) {
+  background: linear-gradient(135deg, #F3E5F5 0%, #E1BEE7 100%);
+}
+
+.topic-card:nth-child(4) {
+  background: linear-gradient(135deg, #E0F7FA 0%, #B2EBF2 100%);
+}
+
+.topic-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+.nav-buttons {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.nav-button {
+  padding: 8px 20px;
+  height: auto;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nav-button:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  color: white;
+}
+
+.nav-button .anticon {
+  font-size: 18px;
+}
+
+.topic-card {
+  background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+  border-radius: 20px;
+  padding: 32px;
+  height: 100%;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.topic-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, rgba(66, 133, 244, 0.1), rgba(219, 68, 55, 0.1));
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.topic-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+.topic-card:hover::before {
+  opacity: 1;
+}
+
+.topic-card h3 {
+  color: #1a73e8;
+  font-size: 24px !important;
+  margin-bottom: 16px !important;
+  position: relative;
+}
+
+.topic-card p {
+  color: #5f6368;
+  font-size: 16px;
+  line-height: 1.6;
+  margin: 0;
+  position: relative;
 }
 
 .content-section:hover {

@@ -1,0 +1,23 @@
+.nav-buttons {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.nav-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nav-button.back-button,
+.nav-button.home-button {
+  background-color: #1890ff;
+  color: white;
+}
+
+.nav-button.back-button:hover,
+.nav-button.home-button:hover {
+  background-color: #40a9ff;
+  color: white;
+}

@@ -1,66 +1,102 @@
 .home-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #FFD54F 0%, #FFA726 100%);
+  background: linear-gradient(120deg, #e0c3fc 0%, #8ec5fc 100%);
   position: relative;
   overflow: hidden;
 }
 
-.home-container::before {
-  content: '';
+.home-content {
+  padding: 24px;
+  position: relative;
+  z-index: 1;
+}
+
+.content-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.home-title {
+  text-align: center;
+  margin-bottom: 40px;
+  background: linear-gradient(120deg, #ff4d4f, #1890ff, #52c41a, #faad14);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: titleGradient 8s ease infinite, titleFloat 3s ease-in-out infinite;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+@keyframes titleGradient {
+  0% { background-position: 0% 50% }
+  50% { background-position: 100% 50% }
+  100% { background-position: 0% 50% }
+}
+
+@keyframes titleFloat {
+  0% { transform: translateY(0px) }
+  50% { transform: translateY(-10px) }
+  100% { transform: translateY(0px) }
+}
+
+.carousel-container {
+  margin-bottom: 40px;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+}
+
+.carousel-item {
+  height: 400px;
+  position: relative;
+  background-size: cover;
+  background-position: center;
+}
+
+.carousel-content {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: url('data:image/svg+xml;utf8,<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg"><circle cx="2" cy="2" r="2" fill="rgba(255,255,255,0.1)"/></svg>');
-  animation: floatingDots 20s linear infinite;
-  pointer-events: none;
-}
-
-.home-content {
-  padding: 48px 24px;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.3) 100%);
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
-  position: relative;
-  z-index: 1;
+  padding: 20px;
+  text-align: center;
+  color: white;
 }
 
-.home-title {
-  color: #ffffff;
-  text-align: center;
-  margin-bottom: 64px !important;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-  font-size: 3em !important;
-  font-weight: bold !important;
-  letter-spacing: 2px;
-  animation: titleFloat 3s ease-in-out infinite;
+.carousel-title {
+  font-size: 2em;
+  margin-bottom: 16px;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+.carousel-description {
+  font-size: 1.2em;
+  max-width: 800px;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
 }
 
 .feature-card {
-  text-align: center;
-  padding: 32px;
-  border-radius: 24px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(255, 255, 255, 0.25);
   backdrop-filter: blur(10px);
-  border: 2px solid rgba(255, 255, 255, 0.1);
-  max-width: 800px;
-  margin: 0 auto;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
 }
 
 .feature-card:hover {
-  transform: translateY(-12px) scale(1.02);
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.2);
-  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-5px);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
 }
 
 .card-icon {
-  margin-bottom: 24px;
-  color: #FF6D00;
-  transform-origin: center;
-  animation: iconPulse 2s ease-in-out infinite;
+  font-size: 32px;
+  margin-bottom: 16px;
+  color: #1a237e;
 }
 
 .feature-card h3 {
